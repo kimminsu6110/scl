@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
-import { useSetRecoilState } from 'recoil';
-import { Categories, IToDo, toDoState } from './atoms';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { categories, IToDo, toDoState } from './atoms';
 interface IForm {
   toDo: string;
 }
 
 function ToDo({ text, category, id }: IToDo) {
   const setToDos = useSetRecoilState(toDoState);
+  const categoryIndex = useRecoilValue(categories);
   const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     const {
       currentTarget: { name },
@@ -22,25 +23,19 @@ function ToDo({ text, category, id }: IToDo) {
       ];
     });
   };
-  
+
   return (
     <li>
       <span>{text}</span>
-      {category != Categories.DOING && (
-        <button name={Categories.DOING + ''} onClick={onClick}>
-          Doing
-        </button>
-      )}
-      {category != Categories.TO_DO && (
-        <button name={Categories.TO_DO + ''} onClick={onClick}>
-          To Do
-        </button>
-      )}
-      {category != Categories.DONE && (
-        <button name={Categories.DONE + ''} onClick={onClick}>
-          Done
-        </button>
-      )}
+      {categoryIndex?.map((cat) => {
+        if (cat != category) {
+          return (
+            <button name={cat} onClick={onClick}>
+              {cat}
+            </button>
+          );
+        }
+      })}
     </li>
   );
 }

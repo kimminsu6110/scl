@@ -1,21 +1,20 @@
+import { getValue } from '@testing-library/user-event/dist/utils';
 import { atom, selector } from 'recoil';
 
-export enum Categories {
-  'TO_DO',
-  'DOING',
-  'DONE',
-}
-type categories = 'TO_DO' | 'DOING' | 'DONE';
+export const categories = atom<string[]>({
+  key: 'categories',
+  default: ['TO_DO', 'DOING', 'DONE'],
+});
 
-export const categoryState = atom<Categories>({
+export const categoryState = atom<string>({
   key: 'category',
-  default: Categories.TO_DO,
+  default: 'TO_DO',
 });
 
 export interface IToDo {
   text: string;
   id: number;
-  category: Categories;
+  category: string;
 }
 export const toDoState = atom<IToDo[]>({
   key: 'toDo',

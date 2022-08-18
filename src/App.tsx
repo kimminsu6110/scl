@@ -1,11 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { RecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import {
+  RecoilState,
+  useRecoilState,
+  useRecoilValue,
+  useSetRecoilState,
+} from 'recoil';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './theme';
 import ToDoList from './Components/ToDoList';
 import { useForm } from 'react-hook-form';
 
-import { categoryState, IToDo, toDoState } from './Components/atoms';
+import {
+  categories,
+  categoryState,
+  IToDo,
+  toDoState,
+} from './Components/atoms';
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
@@ -72,6 +82,9 @@ a{
 
 function App() {
   const setToDos = useSetRecoilState(toDoState);
+  const setCats = useSetRecoilState(categories);
+  const value = useRecoilValue(categories);
+
   useEffect(() => {
     if (localStorage.tdl == undefined) {
       localStorage.setItem('tdl', JSON.stringify([]));
@@ -81,6 +94,20 @@ function App() {
     } else {
       let tdl = JSON.parse(t);
       setToDos(tdl);
+    }
+
+    if (localStorage.cat == undefined) {
+      localStorage.setItem('cat', JSON.stringify([]));
+      console.log(1);
+    }
+    let c = localStorage.getItem('cat');
+    if (c == null) {
+      console.log(2);
+    } else {
+      let cat = JSON.parse(c);
+      if (cat.length > 0) {
+        setCats((cur) => [...cur, cat]);
+      }
     }
   }, []);
 
