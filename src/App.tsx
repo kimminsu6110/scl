@@ -98,11 +98,9 @@ function App() {
 
     if (localStorage.cat == undefined) {
       localStorage.setItem('cat', JSON.stringify([]));
-      console.log(1);
     }
     let c = localStorage.getItem('cat');
     if (c == null) {
-      console.log(2);
     } else {
       let cat = JSON.parse(c);
       if (cat.length > 0) {
